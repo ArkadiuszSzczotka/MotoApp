@@ -17,6 +17,7 @@ public class SqlRepository<T> : IRepository<T> where T : class, IEntity, new()
     }
 
     public event EventHandler<T>? ItemAdded;
+    public event EventHandler<T>? ItemRemoved;
 
     public IEnumerable<T> GetAll()
     {
@@ -27,7 +28,7 @@ public class SqlRepository<T> : IRepository<T> where T : class, IEntity, new()
     {
         _dbSet.Add(item);
         _itemAddedCallback?.Invoke(item);
-        ItemAdded.Invoke(this, item);
+        ItemAdded?.Invoke(this, item);
     }
 
     public T? GetById(int id)
@@ -38,6 +39,7 @@ public class SqlRepository<T> : IRepository<T> where T : class, IEntity, new()
     public void Remove(T item)
     {
         _dbSet.Remove(item);
+        ItemRemoved?.Invoke(this, item);
     }
 
     public void Save()

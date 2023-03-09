@@ -39,8 +39,6 @@ static void AddEmployees(IRepository<Employee> employeeRepository)
     employeeRepository.AddBatch(employees);
 }
 
-
-
 static void AddManagers(IWriteRepository<Manager> managerRepository)
 {
     managerRepository.Add(new Manager { FirstName = "Grzegorz" });

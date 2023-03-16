@@ -55,13 +55,6 @@ void RepositoryOnItemAdded(object? sender, Employee e)
     Console.WriteLine($"Employee added - {e.FirstName} from {sender?.GetType().Name}");
 }
 
-/*
-AddManagers(employeeRepository);
-AddEmployees(employeeRepository);
-RemoveEntity(employeeRepository, 4);
-WriteToConsole(employeeRepository);
-*/
-
 static void EmployeeAdded(Employee item)
 {
     Console.WriteLine($"{item.FirstName} added");

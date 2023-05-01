@@ -48,10 +48,20 @@ public class App : IApp
             _carsRepository.Add(car);
         }
 
-        foreach (var car in _carsProvider.FilterCars(15000))
+        Console.WriteLine($"Price of the cheapest car is: {_carsProvider.GetMinimumPriceOfAllCars():C}");
+
+        Console.WriteLine("The cars are available in the following colors:");
+        var availableCarsColors = _carsProvider.GetUniqueCarColors();
+        availableCarsColors.ForEach(car => Console.WriteLine(car));
+
+        Console.WriteLine("Show not everything about cars:");
+        foreach (var item in _carsProvider.GetIDsNamesTypes())
         {
-            Console.WriteLine(car);
+            Console.WriteLine(item);
         }
+
+        Console.WriteLine("Using anonymous class show not everything about cars:");
+        Console.WriteLine(_carsProvider.GetIDsNamesTotalSalesAnonymously());
     }
 
     public static List<Car> GenerateCars()

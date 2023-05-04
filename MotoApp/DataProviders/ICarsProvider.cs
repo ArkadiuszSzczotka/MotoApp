@@ -10,4 +10,8 @@ public interface ICarsProvider
 
     List<Car> GetIDsNamesTypes();
     string GetIDsNamesTotalSalesAnonymously();
+    List<Car> OrderByNameAndThenByColor();
+
+    List<Car> OrderByNameDescendingAndThenByColorDescending();
+
 }

@@ -62,6 +62,14 @@ public class App : IApp
 
         Console.WriteLine("Using anonymous class show not everything about cars:");
         Console.WriteLine(_carsProvider.GetIDsNamesTotalSalesAnonymously());
+
+        Console.WriteLine("Ordered by name and color:");
+        var orderedCarsByNameAndThenByColor = _carsProvider.OrderByNameAndThenByColor();
+        orderedCarsByNameAndThenByColor.ForEach(car => Console.WriteLine(car));
+
+        Console.WriteLine("Ordered by name and color in descending order:");
+        var orderedCarsByNameDescendingAndThenByColorDescending = _carsProvider.OrderByNameDescendingAndThenByColorDescending();
+        orderedCarsByNameDescendingAndThenByColorDescending.ForEach(car => Console.WriteLine(car));
     }
 
     public static List<Car> GenerateCars()
@@ -75,7 +83,8 @@ public class App : IApp
                 new Car { Id = 5, Name = "Car 5", Color = "Black", StandardCost = 9000.00m, ListPrice = 14000.00m, Type = "Hatchback" },
                 new Car { Id = 6, Name = "Car 6", Color = "White", StandardCost = 11000.00m, ListPrice = 17000.00m, Type = "Coupe" },
                 new Car { Id = 7, Name = "Car 7", Color = "Gray", StandardCost = 10000.00m, ListPrice = 16000.00m, Type = "Sedan" },
-                new Car { Id = 8, Name = "Car 8", Color = "Silver", StandardCost = 9500.00m, ListPrice = 14000.00m, Type = "SUV" }
+                new Car { Id = 8, Name = "Car 8", Color = "Silver", StandardCost = 9500.00m, ListPrice = 14000.00m, Type = "SUV" },
+                new Car { Id = 9, Name = "Car 8", Color = "Green", StandardCost = 9500.00m, ListPrice = 14000.00m, Type = "SUV" }
             };
     }
 }

@@ -30,9 +30,8 @@ public class App : IApp
             new Employee{ FirstName = "Zuzanna"}
         };
 
-        _employeesRepository.AddBatch(employees);
-        _employeesRepository.Save();
-
+        _employeesRepository.AddBatchThenSave(employees);
+        
         var items = _employeesRepository.GetAll();
 
         foreach (var item in items)
@@ -64,8 +63,8 @@ public class App : IApp
         Console.WriteLine(_carsProvider.GetIDsNamesTotalSalesAnonymously());
 
         Console.WriteLine("Ordered by name and color:");
-        var orderedCarsByNameAndThenByColor = _carsProvider.OrderByNameAndThenByColor();
-        orderedCarsByNameAndThenByColor.ForEach(car => Console.WriteLine(car));
+        var carsByNameAndThenByColor = _carsProvider.OrderByNameAndThenByColor();
+        carsByNameAndThenByColor.ForEach(car => Console.WriteLine(car));
 
         Console.WriteLine("Ordered by name and color in descending order:");
         var orderedCarsByNameDescendingAndThenByColorDescending = _carsProvider.OrderByNameDescendingAndThenByColorDescending();

@@ -1,5 +1,6 @@
 ﻿using MotoApp;
 using MotoApp.DataProviders;
+using MotoApp.DataProviders.Extenions;
 using MotoApp.Entities;
 using MotoApp.Repositories;
 using MotoApp.Repositories.Extensions;
@@ -67,22 +68,34 @@ public class App : IApp
         carsByNameAndThenByColor.ForEach(car => Console.WriteLine(car));
 
         Console.WriteLine("Ordered by name and color in descending order:");
-        var orderedCarsByNameDescendingAndThenByColorDescending = _carsProvider.OrderByNameDescendingAndThenByColorDescending();
-        orderedCarsByNameDescendingAndThenByColorDescending.ForEach(car => Console.WriteLine(car));
+        var carsOrderedDescending = _carsProvider.OrderByNameDescendingAndThenByColorDescending();
+        carsOrderedDescending.ForEach(car => Console.WriteLine(car));
+
+        Console.WriteLine("Where name starts with... :");
+        var carsStartsWith = _carsProvider.WhereStartsWith("Car 8");
+        carsStartsWith.ForEach(car => Console.WriteLine(car));
+
+        Console.WriteLine("Cars wheres name starts with.. and cost is greater than 9500:");
+        var carsStartsWithAndCost = _carsProvider.WhereStartsWithAndCostGreaterThan("Car 8", 9500);
+        carsStartsWithAndCost.ForEach(car => Console.WriteLine(car));
+
+        Console.WriteLine("Cars filtered by color using extension method:");
+        var carsByColor = _carsProvider.WhereColorIs("Green");
+        carsByColor.ForEach(car => Console.WriteLine(car));
     }
 
     public static List<Car> GenerateCars()
     {
         return new List<Car>()
             {
-                new Car { Id = 1, Name = "Car 1", Color = "Red", StandardCost = 10000.00m, ListPrice = 15000.00m, Type = "Sedan" },
+                new Car { Id = 1, Name = "Car 8", Color = "Red", StandardCost = 10000.00m, ListPrice = 15000.00m, Type = "Sedan" },
                 new Car { Id = 2, Name = "Car 2", Color = "Blue", StandardCost = 12000.00m, ListPrice = 18000.00m, Type = "Convertible" },
                 new Car { Id = 3, Name = "Car 3", Color = "Green", StandardCost = 8000.00m, ListPrice = 13000.00m, Type = "SUV" },
                 new Car { Id = 4, Name = "Car 4", Color = "Yellow", StandardCost = 15000.00m, ListPrice = 20000.00m, Type = "Sports Car" },
                 new Car { Id = 5, Name = "Car 5", Color = "Black", StandardCost = 9000.00m, ListPrice = 14000.00m, Type = "Hatchback" },
                 new Car { Id = 6, Name = "Car 6", Color = "White", StandardCost = 11000.00m, ListPrice = 17000.00m, Type = "Coupe" },
                 new Car { Id = 7, Name = "Car 7", Color = "Gray", StandardCost = 10000.00m, ListPrice = 16000.00m, Type = "Sedan" },
-                new Car { Id = 8, Name = "Car 8", Color = "Silver", StandardCost = 9500.00m, ListPrice = 14000.00m, Type = "SUV" },
+                new Car { Id = 8, Name = "Car 8", Color = "Silver", StandardCost = 9600.00m, ListPrice = 14000.00m, Type = "SUV" },
                 new Car { Id = 9, Name = "Car 8", Color = "Green", StandardCost = 9500.00m, ListPrice = 14000.00m, Type = "SUV" }
             };
     }

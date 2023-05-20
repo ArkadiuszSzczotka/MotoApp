@@ -14,4 +14,8 @@ public interface ICarsProvider
 
     List<Car> OrderByNameDescendingAndThenByColorDescending();
 
+    List<Car> WhereStartsWith(string prefix);
+    List<Car> WhereStartsWithAndCostGreaterThan(string prefix, decimal cost);
+    List<Car> WhereColorIs(string color);
+
 }

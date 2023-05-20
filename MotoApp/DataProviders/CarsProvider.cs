@@ -1,4 +1,5 @@
-﻿using MotoApp.Entities;
+﻿using MotoApp.DataProviders.Extenions;
+using MotoApp.Entities;
 using MotoApp.Repositories;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -77,5 +78,23 @@ public class CarsProvider : ICarsProvider
             .OrderByDescending(c => c.Name)
             .ThenByDescending(c => c.Color)
             .ToList();
+    }
+
+    public List<Car> WhereStartsWith(string prefix)
+    {
+        var cars = _carRepository.GetAll();
+        return cars.Where(c => c.Name.StartsWith(prefix)).ToList();
+    }
+
+    public List<Car> WhereStartsWithAndCostGreaterThan(string prefix, decimal cost)
+    {
+        var cars = _carRepository.GetAll();
+        return cars.Where(c => c.Name.StartsWith(prefix) && c.StandardCost > cost).ToList();
+    }
+
+    public List<Car> WhereColorIs(string color)
+    {
+        var cars = _carRepository.GetAll();
+        return cars.ByColor(color).ToList();
     }
 }

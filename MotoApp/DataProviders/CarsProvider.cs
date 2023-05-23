@@ -97,4 +97,31 @@ public class CarsProvider : ICarsProvider
         var cars = _carRepository.GetAll();
         return cars.ByColor(color).ToList();
     }
+
+    public Car FirstByColor(string color)
+    {
+        var cars = _carRepository.GetAll();
+        return cars.First(c => c.Color == color);
+    }
+
+    public Car? FirstOrDefaultByColor(string color)
+    {
+        var cars = _carRepository.GetAll();
+        return cars.FirstOrDefault(c => c.Color == color);
+    }
+
+    public Car FirstOrDefaultByColorWithDefault(string color)
+    {
+        var cars = _carRepository.GetAll();
+        return cars
+            .FirstOrDefault(
+                c => c.Color == color,
+                new Car { Id = -1, Name = "NOT FOUND" });
+    }
+
+    public Car? SingleOrDefault(int id)
+    {
+        var cars = _carRepository.GetAll();
+        return cars.SingleOrDefault(c => c.Id == id);
+    }
 }

@@ -4,6 +4,7 @@ using MotoApp.DataProviders.Extenions;
 using MotoApp.Entities;
 using MotoApp.Repositories;
 using MotoApp.Repositories.Extensions;
+using System.Text;
 
 public class App : IApp
 {
@@ -82,6 +83,49 @@ public class App : IApp
         Console.WriteLine("Cars filtered by color using extension method:");
         var carsByColor = _carsProvider.WhereColorIs("Green");
         carsByColor.ForEach(car => Console.WriteLine(car));
+
+        
+        var firstCarByColor = _carsProvider.FirstByColor("Red");
+        StringBuilder sb = new(2048);
+        sb.AppendLine($"Product ID: {firstCarByColor.Id}");
+        sb.AppendLine($"Product name: {firstCarByColor.Name}");
+        sb.AppendLine($"Color: {firstCarByColor.Color}");
+        Console.WriteLine($"First car by color (without validation) is:\n{sb}");
+
+        var firstOrDefaultCar = _carsProvider.FirstOrDefaultByColor("Silver");
+        if( firstOrDefaultCar != null )
+        {
+            StringBuilder sbd = new();
+            sbd.AppendLine($"Product ID: {firstOrDefaultCar.Id}");
+            sbd.AppendLine($"Product name: {firstOrDefaultCar.Name}");
+            sbd.AppendLine($"Color: {firstOrDefaultCar.Color}");
+            Console.WriteLine($"First car by color is:\n{sbd}");
+        } else
+        {
+            Console.WriteLine("There is no such car color available");
+        }
+
+        var firstOrDefaultCarNoNull = _carsProvider.FirstOrDefaultByColorWithDefault("Black");
+        StringBuilder sbdd = new();
+        sbdd.AppendLine($"Product ID: {firstOrDefaultCarNoNull.Id}");
+        sbdd.AppendLine($"Product name: {firstOrDefaultCarNoNull.Name}");
+        sbdd.AppendLine($"Color: {firstOrDefaultCarNoNull.Color}");
+        Console.WriteLine($"First car by color is:\n{sbdd}");
+
+        var singleCar = _carsProvider.SingleOrDefault(9);
+        if (singleCar != null)
+        {
+            StringBuilder sbs = new(2048);
+            sbs.AppendLine($"Product ID: {singleCar.Id}");
+            sbs.AppendLine($"Product name: {singleCar.Name}");
+            sbs.AppendLine($"List Price: {singleCar.ListPrice}");
+            Console.WriteLine($"Single car by ID is:\n{sbs}");
+        }
+        else
+        {
+            Console.WriteLine("There is no such car");
+        }
+
     }
 
     public static List<Car> GenerateCars()

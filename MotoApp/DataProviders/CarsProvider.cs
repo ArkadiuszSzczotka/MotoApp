@@ -1,6 +1,7 @@
 ﻿using MotoApp.DataProviders.Extenions;
 using MotoApp.Entities;
 using MotoApp.Repositories;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -123,5 +124,33 @@ public class CarsProvider : ICarsProvider
     {
         var cars = _carRepository.GetAll();
         return cars.SingleOrDefault(c => c.Id == id);
+    }
+
+    public List<Car> TakeCars(int howMany)
+    {
+        var cars = _carRepository.GetAll();
+        return cars
+            .OrderBy(c => c.Name)
+            .Take(howMany)
+            .ToList();
+    }
+
+    public List<Car> TakeCars(Range range)
+    {
+        var cars = _carRepository.GetAll();
+        return cars
+            .OrderBy(c => c.Name)
+            .Take(range)
+            .ToList();
+    }
+
+    public List<Car> TakeCarsWhileNameStartsWith(string prefix)
+    {
+        var cars = _carRepository.GetAll();
+        return cars
+            .OrderBy(c => c.Name)
+            .TakeWhile(c => c.Name.StartsWith(prefix))
+            .ToList();
+        
     }
 }

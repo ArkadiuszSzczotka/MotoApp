@@ -22,4 +22,7 @@ public interface ICarsProvider
     Car? FirstOrDefaultByColor(string color);
     Car FirstOrDefaultByColorWithDefault(string color);
     Car? SingleOrDefault(int id);
+    List<Car> TakeCars(int howMany);
+    List<Car> TakeCars(Range range);
+    List<Car> TakeCarsWhileNameStartsWith(string prefix);
 }

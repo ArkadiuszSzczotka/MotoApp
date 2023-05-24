@@ -126,6 +126,18 @@ public class App : IApp
             Console.WriteLine("There is no such car");
         }
 
+        var fourCars = _carsProvider.TakeCars(4);
+        Console.WriteLine("Four cars ordered by name:");
+        fourCars.ForEach(car => Console.WriteLine(car));
+
+        var rangeOfCars = _carsProvider.TakeCars(0..1);
+        Console.WriteLine("Cars from 0 to 1 ordered by name:");
+        rangeOfCars.ForEach(car => Console.WriteLine(car));
+
+        var takenWithPrefixCars = _carsProvider.TakeCarsWhileNameStartsWith("C");
+        Console.WriteLine("Cars which name starts with C:");
+        takenWithPrefixCars.ForEach(car =>  Console.WriteLine(car));
+
     }
 
     public static List<Car> GenerateCars()

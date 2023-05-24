@@ -134,7 +134,7 @@ public class App : IApp
         Console.WriteLine("Cars from 0 to 1 ordered by name:");
         rangeOfCars.ForEach(car => Console.WriteLine(car));
 
-        const string letters = "F";
+        const string letters = "B";
         var takenWithPrefixCars = _carsProvider.TakeCarsWhileNameStartsWith(letters);
         Console.WriteLine($"Cars which name starts with {letters}:");
         takenWithPrefixCars.ForEach(car => Console.WriteLine(car));

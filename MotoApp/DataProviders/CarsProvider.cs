@@ -148,9 +148,9 @@ public class CarsProvider : ICarsProvider
     {
         var cars = _carRepository.GetAll();
         return cars
-            .OrderBy(c => c.Name)
             .TakeWhile(c => c.Name.StartsWith(prefix))
+            .OrderBy(c => c.Name)
             .ToList();
-        
+            
     }
 }

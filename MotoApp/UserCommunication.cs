@@ -3,16 +3,18 @@ using MotoApp.Entities;
 using MotoApp.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace MotoApp
 {
     public class UserCommunication : IUserCommunication
     {
-        private IRepository<Car> _carsRepository;
-        private ICarsProvider _carsProvider;
+        private readonly IRepository<Car> _carsRepository;
+        private readonly ICarsProvider _carsProvider;
         public UserCommunication(IRepository<Car> carsRepository, ICarsProvider carsProvider)
         {
             _carsRepository = carsRepository;
@@ -21,6 +23,8 @@ namespace MotoApp
 
         public void ChooseAction()
         {
+            WriteColorLine("Welcome to AAutoStore", ConsoleColor.Green);
+
             bool isRunning = true;
             
             while (isRunning)
@@ -32,6 +36,7 @@ namespace MotoApp
                     r - remove car
                     v - view all cars
                     f - filter cars
+                    s - search car by ID
                     q - quit and save
                     """);
 
@@ -45,26 +50,85 @@ namespace MotoApp
                     case "g":
                         GenerateAndAddSampleCars();
                         break;
+                    case "r":
+                        RemoveEntity(_carsRepository);
+                        break;
+                    case "s":
+                        FindCarByID(_carsRepository);
+                        break;
                     case "q":
                         isRunning = CloseApp(_carsRepository);
                         break;
-                    default: Console.WriteLine("Invalid input");
+                    default:
+                        WriteColorLine("Invalid input", ConsoleColor.Red);
+                        
                         continue;
                 }
                 
             }
         }
 
-        
-        private void ViewAllCars()
+        private Car? FindCarByID(IRepository<Car> repository)
         {
-            var cars = _carsRepository.GetAll();
-            foreach (var car in cars)
+            while (true)
             {
-                Console.WriteLine(car);
+
+                var input = GetNotEmptyInput("Please input (numbers only) ID:");
+                int parsedId;
+                
+                if (!int.TryParse(input, out parsedId))
+                {
+                    WriteColorLine("Please input only interger number", ConsoleColor.Red);
+                }
+                else
+                {
+                    var car = repository.GetById(parsedId);
+                    if (car is not null)
+                    {
+                        WriteColorLine(car.ToString(), ConsoleColor.Yellow);
+                        return car;
+                    }
+                    else
+                    {
+                        WriteColorLine($"There is no car with ID = {input}", ConsoleColor.DarkRed);
+                        return null;
+                    }
+                }
             }
         }
 
+
+        private void RemoveEntity(IRepository<Car> repository)
+        {
+            var itemToRemove = FindCarByID(repository);
+            if (itemToRemove is not null)
+            {
+                repository?.Remove(itemToRemove);
+            }
+        }
+
+        private void ViewAllCars()
+        {
+            var cars = _carsRepository.GetAll();
+            if (cars.ToList().Count > 0)
+            {
+                foreach (var car in cars)
+                {
+                    WriteColorLine(car.ToString(), ConsoleColor.Yellow);
+                }
+            }
+            else
+            {
+                WriteColorLine("There is no data to print.", ConsoleColor.Red);
+            }
+        }
+
+        protected void WriteColorLine(string line, ConsoleColor consoleColor)
+        {
+            Console.ForegroundColor = consoleColor;
+            Console.WriteLine(line);
+            Console.ResetColor();
+        }
 
         public string GetNotEmptyInput(string quest)
         {
@@ -98,7 +162,7 @@ namespace MotoApp
                 new Car { Id = 3, Name = "Mazda", Color = "Green", StandardCost = 8000.00m, ListPrice = 13000.00m, Type = "SUV" },
                 new Car { Id = 4, Name = "Mercedes", Color = "Yellow", StandardCost = 15000.00m, ListPrice = 20000.00m, Type = "Sports Car" },
                 new Car { Id = 5, Name = "Stelantis", Color = "Black", StandardCost = 9000.00m, ListPrice = 14000.00m, Type = "Hatchback" },
-                new Car { Id = 6, Name = "BMW", Color = "White", StandardCost = 11000.00m, ListPrice = 17000.00m, Type = "Coupe" },
+                new Car { Id = 6, Name = "BMW", Color = "Silver", StandardCost = 11000.00m, ListPrice = 17000.00m, Type = "Coupe" },
                 new Car { Id = 7, Name = "Toyota", Color = "Gray", StandardCost = 10000.00m, ListPrice = 16000.00m, Type = "Sedan" },
                 new Car { Id = 8, Name = "Lexus", Color = "Silver", StandardCost = 9600.00m, ListPrice = 14000.00m, Type = "SUV" },
                 new Car { Id = 9, Name = "Buick", Color = "Green", StandardCost = 9500.00m, ListPrice = 14000.00m, Type = "SUV" }

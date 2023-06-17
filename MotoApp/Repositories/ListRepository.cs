@@ -19,7 +19,7 @@
 
         public T? GetById(int id)
         {
-            return _items.Single(item => item.Id == id);
+            return _items.SingleOrDefault(item => item.Id == id);
         }
 
         public void Remove(T item)

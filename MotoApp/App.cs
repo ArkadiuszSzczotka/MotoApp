@@ -10,25 +10,14 @@ using System.Text;
 public class App : IApp
 {
     private readonly IUserCommunication _userCommunication;
-    private readonly IRepository<Employee> _employeesRepository;
-    private readonly IRepository<Car> _carsRepository;
-    private readonly ICarsProvider _carsProvider;
-
-    public App(
-
-        IUserCommunication userCommunication,
-        IRepository<Employee> employeesRepository,
-        IRepository<Car> carsRepository,
-        ICarsProvider carsProvider)
+    
+    public App(IUserCommunication userCommunication)        
     {
         _userCommunication = userCommunication;
-        _employeesRepository = employeesRepository;
-        _carsRepository = carsRepository;
-        _carsProvider = carsProvider;
+        
     }
     public void Run()
     {
-        Console.WriteLine("Welcome to AAutoStore");
         _userCommunication.ChooseAction();
         
 

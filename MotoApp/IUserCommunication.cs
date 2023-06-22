@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MotoApp
+namespace MotoApp;
+
+public interface IUserCommunication
 {
-    public interface IUserCommunication
-    {
-        void ChooseAction();
-    }
+    void ChooseAction();
+    void WriteColorLine(string message, ConsoleColor color);
 }

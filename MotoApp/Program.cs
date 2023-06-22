@@ -7,6 +7,7 @@ using MotoApp.Repositories;
 var services = new ServiceCollection();
 services.AddSingleton<IApp, App>();
 services.AddSingleton<IUserCommunication, UserCommunication>();
+services.AddSingleton<IEventHandlerService, EventHandlerService>();
 services.AddSingleton<IRepository<Employee>, ListRepository<Employee>>();
 services.AddSingleton<IRepository<Car>, ListRepository<Car>>();
 services.AddSingleton<ICarsProvider, CarsProvider>();

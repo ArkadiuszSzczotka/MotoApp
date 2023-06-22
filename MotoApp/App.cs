@@ -1,25 +1,21 @@
 ﻿using MotoApp;
-using MotoApp.DataProviders;
-using MotoApp.DataProviders.Extenions;
-using MotoApp.Entities;
-using MotoApp.Repositories;
-using MotoApp.Repositories.Extensions;
-using System.Data;
-using System.Text;
 
 public class App : IApp
 {
     private readonly IUserCommunication _userCommunication;
-    
-    public App(IUserCommunication userCommunication)        
+    private readonly IEventHandlerService _eventHandlerService;
+
+    public App(IUserCommunication userCommunication, IEventHandlerService eventHandlerService)        
     {
         _userCommunication = userCommunication;
+        _eventHandlerService = eventHandlerService;
         
     }
     public void Run()
-    {
+    {        
+        _eventHandlerService.SubscribeOnEvents();
         _userCommunication.ChooseAction();
-        
+
 
         //Console.WriteLine($"Price of the cheapest car is: {_carsProvider.GetMinimumPriceOfAllCars():C}");
 

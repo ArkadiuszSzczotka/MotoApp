@@ -18,9 +18,33 @@ public class EventHandlerService : IEventHandlerService
     {
         _carsRepository.ItemAdded += OnCarsRepositoryItemAdded;
         _carsRepository.ItemRemoved += OnCarsRepositoryItemRemoved;
+        _carsRepository.ItemAdded += OnItemAddedAudit;
+        _carsRepository.ItemRemoved += OnItemRemovedAudit;
     }
 
-    public void OnCarsRepositoryItemRemoved(object? sender, Car car)
+    private void OnItemRemovedAudit(object? sender, Car car)
+    {
+        if (sender is not null)
+        {
+            using (var writer = File.AppendText(IRepository<IEntity>.auditFileName))
+            {
+                writer.WriteLine($"[{DateTime.UtcNow}]\tremoved:\n  [ID: {car.Id} \t{car.Name}]");
+            }            
+        }
+    }
+
+    private void OnItemAddedAudit(object? sender, Car car)
+    {
+        if (sender is not null)
+        {
+            using (var writer = File.AppendText(IRepository<IEntity>.auditFileName))
+            {
+                writer.WriteLine($"[{DateTime.UtcNow}]\tadded:\n  [ID: {car.Id} \t{car.Name}]");
+            }
+        }
+    }
+
+    private void OnCarsRepositoryItemRemoved(object? sender, Car car)
     {
         if (sender is not null)
         {
@@ -28,7 +52,7 @@ public class EventHandlerService : IEventHandlerService
         }
     }
 
-    public void OnCarsRepositoryItemAdded(object? sender, Car car)
+    private void OnCarsRepositoryItemAdded(object? sender, Car car)
     {
         if (sender is not null)
         {

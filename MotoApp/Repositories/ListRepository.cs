@@ -1,10 +1,12 @@
 ﻿namespace MotoApp.Repositories
 {
     using MotoApp.Entities;
+    using System.Text.Json;
 
     public class ListRepository<T> : IRepository<T> where T : class, IEntity, new()
     {
         protected readonly List<T> _items = new();
+        private readonly string path = $"{typeof(T).Name}_save.json";
 
         public event EventHandler<T>? ItemAdded;
         public event EventHandler<T>? ItemRemoved;
@@ -34,7 +36,8 @@
 
         public void Save()
         {
-            //save is not required because items are added by add method to list
+            var objectsToSave = JsonSerializer.Serialize<IEnumerable<T>>(_items);
+            File.WriteAllText(path, objectsToSave);
         }
     }
 }

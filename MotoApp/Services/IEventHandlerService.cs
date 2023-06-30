@@ -1,4 +1,4 @@
-﻿namespace MotoApp
+﻿namespace MotoApp.Services
 {
     public interface IEventHandlerService
     {

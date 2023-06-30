@@ -9,16 +9,18 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace MotoApp;
+namespace MotoApp.Services;
 
 public class UserCommunication : IUserCommunication
 {
     private readonly IRepository<Car> _carsRepository;
+    private readonly IDataGenerator _dataGenerator;
     private readonly ICarsProvider _carsProvider;
-    public UserCommunication(IRepository<Car> carsRepository, ICarsProvider carsProvider)
+    public UserCommunication(IRepository<Car> carsRepository, ICarsProvider carsProvider, IDataGenerator dataGenerator)
     {
         _carsRepository = carsRepository;
         _carsProvider = carsProvider;
+        _dataGenerator = dataGenerator;
     }
 
     public void ChooseAction()
@@ -26,7 +28,7 @@ public class UserCommunication : IUserCommunication
         WriteColorLine("Welcome to AAutoStore", ConsoleColor.Green);
 
         bool isRunning = true;
-        
+
         while (isRunning)
         {
             Console.WriteLine("""
@@ -41,14 +43,14 @@ public class UserCommunication : IUserCommunication
                     """);
 
             var input = GetNotEmptyInput("Type in a letter here:");
-            
-            switch(input.ToLower())
+
+            switch (input.ToLower())
             {
                 case "v":
-                    ViewAllCars();
+                    ViewAllCars(_carsRepository);
                     break;
                 case "g":
-                    GenerateAndAddSampleCars();
+                    _dataGenerator.GenerateAndAddSampleCars();
                     break;
                 case "r":
                     RemoveEntity(_carsRepository);
@@ -61,10 +63,40 @@ public class UserCommunication : IUserCommunication
                     break;
                 default:
                     WriteColorLine("Invalid input", ConsoleColor.Red);
-                    
+
                     continue;
             }
-            
+        }
+    }
+    
+
+    public void WriteColorLine(string line, ConsoleColor consoleColor)
+    {
+        Console.ForegroundColor = consoleColor;
+        Console.WriteLine(line);
+        Console.ResetColor();
+    }
+
+
+    public string GetNotEmptyInput(string quest)
+    {
+        Console.WriteLine(quest);
+        var input = Console.ReadLine();
+
+        while (string.IsNullOrEmpty(input))
+        {
+            Console.WriteLine("The input can not be empty");
+            input = Console.ReadLine();
+        }
+        return input;
+    }
+
+    private void RemoveEntity(IRepository<Car> repository)
+    {
+        var itemToRemove = FindCarByID(repository);
+        if (itemToRemove is not null)
+        {
+            repository?.Remove(itemToRemove);
         }
     }
 
@@ -75,7 +107,7 @@ public class UserCommunication : IUserCommunication
 
             var input = GetNotEmptyInput("Please input (numbers only) ID:");
             int parsedId;
-            
+
             if (!int.TryParse(input, out parsedId))
             {
                 WriteColorLine("Please input only interger number", ConsoleColor.Red);
@@ -96,22 +128,10 @@ public class UserCommunication : IUserCommunication
             }
         }
     }
-
-
-    private void RemoveEntity(IRepository<Car> repository)
+    private void ViewAllCars(IRepository<Car> repository)
     {
-        var itemToRemove = FindCarByID(repository);
-        if (itemToRemove is not null)
-        {
-            repository?.Remove(itemToRemove);               
-        }
-    }
-
-    
-    private void ViewAllCars()
-    {
-        var cars = _carsRepository.GetAll();
-        if (cars.ToList().Count > 0)
+        var cars = repository.GetAll().ToList();
+        if (cars.Count() > 0)
         {
             foreach (var car in cars)
             {
@@ -124,52 +144,7 @@ public class UserCommunication : IUserCommunication
         }
     }
 
-    public void WriteColorLine(string line, ConsoleColor consoleColor)
-    {
-        Console.ForegroundColor = consoleColor;
-        Console.WriteLine(line);
-        Console.ResetColor();
-    }
-
-
-    public string GetNotEmptyInput(string quest)
-    {
-        Console.WriteLine(quest);
-        var input = Console.ReadLine();
-
-        while (String.IsNullOrEmpty(input))
-        {
-            Console.WriteLine("The input can not be empty");
-            input = Console.ReadLine();
-        }
-        return input;
-    }
-
-    private void GenerateAndAddSampleCars()
-    {
-        var cars = GenerateSampleCars();
-
-        foreach (var car in cars)
-        {
-            _carsRepository.Add(car);
-        }
-    }
-
-    private List<Car> GenerateSampleCars()
-    {
-        return new List<Car>()
-        {
-            new Car { Id = 1, Name = "Ford", Color = "Red", StandardCost = 10000.00m, ListPrice = 15000.00m, Type = "Sedan" },
-            new Car { Id = 2, Name = "Fiat", Color = "Blue", StandardCost = 12000.00m, ListPrice = 18000.00m, Type = "Convertible" },
-            new Car { Id = 3, Name = "Mazda", Color = "Green", StandardCost = 8000.00m, ListPrice = 13000.00m, Type = "SUV" },
-            new Car { Id = 4, Name = "Mercedes", Color = "Yellow", StandardCost = 15000.00m, ListPrice = 20000.00m, Type = "Sports Car" },
-            new Car { Id = 5, Name = "Stelantis", Color = "Black", StandardCost = 9000.00m, ListPrice = 14000.00m, Type = "Hatchback" },
-            new Car { Id = 6, Name = "BMW", Color = "Silver", StandardCost = 11000.00m, ListPrice = 17000.00m, Type = "Coupe" },
-            new Car { Id = 7, Name = "Toyota", Color = "Gray", StandardCost = 10000.00m, ListPrice = 16000.00m, Type = "Sedan" },
-            new Car { Id = 8, Name = "Lexus", Color = "Silver", StandardCost = 9600.00m, ListPrice = 14000.00m, Type = "SUV" },
-            new Car { Id = 9, Name = "Buick", Color = "Green", StandardCost = 9500.00m, ListPrice = 14000.00m, Type = "SUV" }
-        };
-    }
+    
 
     private bool CloseApp(IRepository<Car> carsRepository)
     {
@@ -192,6 +167,4 @@ public class UserCommunication : IUserCommunication
             }
         }
     }
-
-
 }

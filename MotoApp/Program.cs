@@ -3,6 +3,7 @@ using MotoApp;
 using MotoApp.DataProviders;
 using MotoApp.Entities;
 using MotoApp.Repositories;
+using MotoApp.Services;
 
 var services = new ServiceCollection();
 services.AddSingleton<IApp, App>();
@@ -10,6 +11,7 @@ services.AddSingleton<IUserCommunication, UserCommunication>();
 services.AddSingleton<IEventHandlerService, EventHandlerService>();
 services.AddSingleton<IRepository<Employee>, ListRepository<Employee>>();
 services.AddSingleton<IRepository<Car>, ListRepository<Car>>();
+services.AddSingleton<IDataGenerator, DataGenerator>();
 services.AddSingleton<ICarsProvider, CarsProvider>();
 
 var serviceProvider = services.BuildServiceProvider();

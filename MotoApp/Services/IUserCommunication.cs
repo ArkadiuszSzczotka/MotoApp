@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MotoApp;
+namespace MotoApp.Services;
 
 public interface IUserCommunication
 {

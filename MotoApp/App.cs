@@ -1,19 +1,24 @@
 ﻿using MotoApp;
+using MotoApp.Services;
 
 public class App : IApp
 {
     private readonly IUserCommunication _userCommunication;
     private readonly IEventHandlerService _eventHandlerService;
+    private readonly IDataGenerator _dataGenerator;
 
-    public App(IUserCommunication userCommunication, IEventHandlerService eventHandlerService)        
+    public App(IUserCommunication userCommunication, IEventHandlerService eventHandlerService, IDataGenerator dataGenerator)        
     {
         _userCommunication = userCommunication;
         _eventHandlerService = eventHandlerService;
+        _dataGenerator = dataGenerator;
         
     }
     public void Run()
     {        
         _eventHandlerService.SubscribeOnEvents();
+        _dataGenerator.PrintDataSource();
+        _dataGenerator.AddCars();
         _userCommunication.ChooseAction();
 
 

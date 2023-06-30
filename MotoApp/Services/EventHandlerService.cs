@@ -1,14 +1,14 @@
 ﻿using MotoApp.Entities;
 using MotoApp.Repositories;
 
-namespace MotoApp;
+namespace MotoApp.Services;
 
 public class EventHandlerService : IEventHandlerService
 {
     private readonly IRepository<Car> _carsRepository;
     private readonly IUserCommunication _userCommunication;
 
-    public EventHandlerService(IRepository<Car> carsRepository, IUserCommunication userCommunication) 
+    public EventHandlerService(IRepository<Car> carsRepository, IUserCommunication userCommunication)
     {
         _carsRepository = carsRepository;
         _userCommunication = userCommunication;
@@ -29,7 +29,7 @@ public class EventHandlerService : IEventHandlerService
             using (var writer = File.AppendText(IRepository<IEntity>.auditFileName))
             {
                 writer.WriteLine($"[{DateTime.UtcNow}]\tremoved:\n  [ID: {car.Id} \t{car.Name}]");
-            }            
+            }
         }
     }
 

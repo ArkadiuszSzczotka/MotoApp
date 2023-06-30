@@ -43,4 +43,9 @@ public class SqlRepository<T> : IRepository<T> where T : class, IEntity, new()
     {
         _dbContext.SaveChanges();
     }
+
+    public IEnumerable<T> Read()
+    {
+        return _dbSet.ToList();
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using MotoApp;
+using MotoApp.Components.CsvReader;
 using MotoApp.Services;
 
 public class App : IApp
@@ -6,17 +7,21 @@ public class App : IApp
     private readonly IUserCommunication _userCommunication;
     private readonly IEventHandlerService _eventHandlerService;
     private readonly IDataGenerator _dataGenerator;
+    private readonly ICsvReader _csvReader;
 
-    public App(IUserCommunication userCommunication, IEventHandlerService eventHandlerService, IDataGenerator dataGenerator)        
+    public App(IUserCommunication userCommunication,
+        IEventHandlerService eventHandlerService,
+        IDataGenerator dataGenerator,
+        ICsvReader csvReader)        
     {
         _userCommunication = userCommunication;
         _eventHandlerService = eventHandlerService;
         _dataGenerator = dataGenerator;
-        
+        _csvReader = csvReader;
     }
     public void Run()
     {        
-        _eventHandlerService.SubscribeOnEvents();        
+        _eventHandlerService.SubscribeOnEvents();
         _dataGenerator.AddCars();
         _userCommunication.ChooseAction();
 

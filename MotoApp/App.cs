@@ -16,8 +16,7 @@ public class App : IApp
     }
     public void Run()
     {        
-        _eventHandlerService.SubscribeOnEvents();
-        _dataGenerator.PrintDataSource();
+        _eventHandlerService.SubscribeOnEvents();        
         _dataGenerator.AddCars();
         _userCommunication.ChooseAction();
 

@@ -1,9 +1,14 @@
-﻿using MotoApp.Entities;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using MotoApp.Entities;
 using MotoApp.Repositories;
+using OpenAI_API;
+using OpenAI_API.Completions;
+using OpenAI_API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace MotoApp.Services;
@@ -11,8 +16,7 @@ namespace MotoApp.Services;
 public class DataGenerator : IDataGenerator
 {
     private readonly IRepository<Car> _carsRepository;
-
-
+    
     public DataGenerator(IRepository<Car> carsRepository)
     {
         _carsRepository = carsRepository;
@@ -23,12 +27,6 @@ public class DataGenerator : IDataGenerator
         _carsRepository.Read();
     }
 
-    public void PrintDataSource()
-    {
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Data source is JSON file.\n");
-        Console.ResetColor();
-    }
 
     public void GenerateAndAddSampleCars()
     {

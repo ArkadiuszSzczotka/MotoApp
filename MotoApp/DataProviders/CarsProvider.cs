@@ -64,6 +64,14 @@ public class CarsProvider : ICarsProvider
         return carColors;
     }
 
+    public List<Car> OrderByPrice()
+    {
+        var cars = _carRepository.GetAll();
+        return cars
+            .OrderBy(c => c.ListPrice)
+            .ToList();
+    }
+
     public List<Car> OrderByNameAndThenByColor()
     {
         var cars = _carRepository.GetAll();

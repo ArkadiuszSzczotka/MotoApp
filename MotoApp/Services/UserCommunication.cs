@@ -23,6 +23,7 @@ public class UserCommunication : IUserCommunication
         _dataGenerator = dataGenerator;
     }
 
+
     public void ChooseAction()
     {
         WriteColorLine("Welcome to AAutoStore", ConsoleColor.Green);
@@ -37,6 +38,7 @@ public class UserCommunication : IUserCommunication
                     g - generate sample of cars and add them
                     r - remove car
                     v - view all cars
+                    c - view all cars (cheap) sorted by price descending
                     f - filter cars
                     s - search car by ID
                     q - quit and save
@@ -48,6 +50,9 @@ public class UserCommunication : IUserCommunication
             {
                 case "v":
                     ViewAllCars(_carsRepository);
+                    break;
+                case "c":
+                    ViewCarsByListPrice(_carsProvider);
                     break;
                 case "g":
                     _dataGenerator.GenerateAndAddSampleCars();
@@ -144,7 +149,21 @@ public class UserCommunication : IUserCommunication
         }
     }
 
-    
+    private void ViewCarsByListPrice(ICarsProvider cars)
+    {
+        var cheapCars = cars.OrderByPrice();
+        if (cheapCars.Count() > 0)
+        {
+            foreach (var car in cheapCars)
+            {
+                WriteColorLine(car.ToString(), ConsoleColor.Yellow);
+            }
+        }
+        else
+        {
+            WriteColorLine("There is no data to print.", ConsoleColor.Red);
+        }
+    }
 
     private bool CloseApp(IRepository<Car> carsRepository)
     {

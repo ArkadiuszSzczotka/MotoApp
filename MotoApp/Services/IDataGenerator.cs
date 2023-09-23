@@ -9,7 +9,6 @@ namespace MotoApp.Services;
 
 public interface IDataGenerator
 {
-    public void PrintDataSource();
     public void AddCars();
     public void GenerateAndAddSampleCars();
 }

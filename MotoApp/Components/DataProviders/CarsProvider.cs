@@ -1,11 +1,11 @@
-﻿using MotoApp.DataProviders.Extenions;
-using MotoApp.Entities;
-using MotoApp.Repositories;
+﻿using MotoApp.Components.DataProviders.Extenions;
+using MotoApp.Data.Entities;
+using MotoApp.Data.Repositories;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace MotoApp.DataProviders;
+namespace MotoApp.Components.DataProviders;
 
 public class CarsProvider : ICarsProvider
 {
@@ -27,7 +27,7 @@ public class CarsProvider : ICarsProvider
 
         StringBuilder sb = new(2048);
 
-        foreach(var car in idsNamesTotalSales)
+        foreach (var car in idsNamesTotalSales)
         {
             sb.AppendLine($"Product ID: {car.Id}");
             sb.AppendLine($"Product name: {car.NameOfProduct}");
@@ -157,8 +157,8 @@ public class CarsProvider : ICarsProvider
         var cars = _carRepository.GetAll();
         return cars
             .OrderBy(c => c.Name)
-            .TakeWhile(c => c.Name.StartsWith(prefix))          
-            .ToList();            
+            .TakeWhile(c => c.Name.StartsWith(prefix))
+            .ToList();
     }
 
     public List<Car> SkipCars(int howMany)

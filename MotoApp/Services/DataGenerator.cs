@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using MotoApp.Entities;
-using MotoApp.Repositories;
+using MotoApp.Data.Entities;
+using MotoApp.Data.Repositories;
 using OpenAI_API;
 using OpenAI_API.Completions;
 using OpenAI_API.Models;
